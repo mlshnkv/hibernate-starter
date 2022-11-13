@@ -1,5 +1,7 @@
 package org.example.hibernatestarter;
 
+import org.example.hibernatestarter.converter.BirthdayConverter;
+import org.example.hibernatestarter.entity.Birthday;
 import org.example.hibernatestarter.entity.Role;
 import org.example.hibernatestarter.entity.User;
 import org.hibernate.Session;
@@ -19,6 +21,9 @@ public class HibernateRunner {
 //		configuration.setPhysicalNamingStrategy(new CamelCaseToUnderscoresNamingStrategy());
 
 		configuration.addAnnotatedClass(User.class);
+		//Либо вешаю аннотацию над полем в сущности @Convert(converter = BirthdayConverter.class), либо прописываю в классе конфигурации
+		// autoApply в true либо здесь либо в аннотации @Converter над классом @Converter(autoApply = true)
+		configuration.addAttributeConverter(BirthdayConverter.class, true);
 		try (SessionFactory sessionFactory = configuration.buildSessionFactory();
 			 Session session = sessionFactory.openSession()) {
 			session.beginTransaction();
@@ -26,8 +31,7 @@ public class HibernateRunner {
 					.username("ivan@gmail.com")
 					.firstname("Ivan")
 					.lastname("Ivanov")
-					.birthDate(LocalDate.of(1991, 1, 15))
-					.age(31)
+					.birthDate(new Birthday(LocalDate.of(1991, 1, 15)))
 					.role(Role.ADMIN)
 					.build();
 			session.save(user);

@@ -1,10 +1,12 @@
 package org.example.hibernatestarter.entity;
 
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.hibernatestarter.converter.BirthdayConverter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -35,4 +37,11 @@ public class User {
 	@Column(name = "birth_date")
 	@Convert(converter = BirthdayConverter.class)
 	private Birthday birthDate;
+
+	//jsonb это более локаничное название класса:
+	// вместо @Type(type = "com.vladmihalcea.hibernate.type.json.JsonBinaryType")
+	//указываем @Type(type = "jsonb"), потому что "jsonb" возвращается методом:
+	// com.vladmihalcea.hibernate.type.json.JsonBinaryType.getName
+	@Type(type = "jsonb")
+	private String info;
 }

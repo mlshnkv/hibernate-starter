@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.hibernatestarter.converter.BirthdayConverter;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -22,6 +23,7 @@ import javax.persistence.Table;
 @Entity
 @Builder
 @Table(name = "users")
+@TypeDef(name = "mlshnkv",typeClass = JsonBinaryType.class)
 public class User {
 
 	@Id
@@ -42,6 +44,7 @@ public class User {
 	// вместо @Type(type = "com.vladmihalcea.hibernate.type.json.JsonBinaryType")
 	//указываем @Type(type = "jsonb"), потому что "jsonb" возвращается методом:
 	// com.vladmihalcea.hibernate.type.json.JsonBinaryType.getName
-	@Type(type = "jsonb")
+//	@Type(type = "jsonb")
+	@Type(type = "mlshnkv")
 	private String info;
 }
